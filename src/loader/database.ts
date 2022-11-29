@@ -1,12 +1,13 @@
 import { Container } from "typeorm-typedi-extensions"
 import { createConnection, useContainer } from "typeorm"
+import { config } from "../configs/index.config"
 
 export const initDatabase = async () => {
   useContainer(Container)
 
   await createConnection({
-    type: "postgres",
-    url: "postgres://bdizucqk:3cXv40_uh3drpL2yWiqVbqfGtsuTFWvH@arjuna.db.elephantsql.com/bdizucqk",
+    type: config.database.type,
+    url: config.database.url,
     entities: ["src/entities/*.ts"],
     synchronize: true,
     logging: false,

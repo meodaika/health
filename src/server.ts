@@ -1,9 +1,10 @@
+import { config } from "./configs/index.config"
 import { setupServer } from "./loader/app"
 
 const main = async () => {
   const app = await setupServer()
 
-  const port = 8080
+  const port = config.port
   app.listen(port, () => console.log(`App is running at port ${port}`))
 }
 
