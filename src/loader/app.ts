@@ -5,8 +5,11 @@ import {
   handleNotFound,
 } from "../middlewares/handleError.middleware"
 import { configSwagger } from "../middlewares/swagger.middleware"
+import { initDatabase } from "./database"
 
-export const setupServer = (): Express => {
+export const setupServer = async () => {
+  await initDatabase()
+
   const app: Express = express()
   app.use(cors())
 
