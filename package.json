@@ -4,12 +4,15 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon"
+    "dev": "nodemon",
+    "docs": "tsoa routes && tsoa spec-and-routes"
   },
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "jsonwebtoken": "^8.5.1",
+    "swagger-ui-express": "^4.6.0",
+    "tsoa": "^4.1.3",
     "typedi": "^0.10.0",
     "typeorm": "^0.3.10",
     "typeorm-typedi-extensions": "^0.4.1"
@@ -17,6 +20,7 @@
   "devDependencies": {
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.14",
+    "@types/swagger-ui-express": "^4.1.3",
     "ts-node": "^10.9.1",
     "typescript": "^4.9.3"
   }

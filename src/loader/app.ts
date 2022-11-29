@@ -4,10 +4,14 @@ import {
   catchError,
   handleNotFound,
 } from "../middlewares/handleError.middleware"
+import { configSwagger } from "../middlewares/swagger.middleware"
 
 export const setupServer = (): Express => {
   const app: Express = express()
   app.use(cors())
+
+  // config swagger
+  configSwagger(app)
 
   // handle Error
 

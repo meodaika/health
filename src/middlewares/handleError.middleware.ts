@@ -1,4 +1,4 @@
-import express, { Express, Request, Response, NextFunction } from "express"
+import { Express, Request, Response, NextFunction } from "express"
 import HttpException from "../exceptions/http.exception"
 export const handleNotFound = (app: Express) => {
   app.use((req, res, next) => {
