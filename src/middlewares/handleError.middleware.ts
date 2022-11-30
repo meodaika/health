@@ -1,21 +1,32 @@
 import { Express, Request, Response, NextFunction } from "express"
+import {
+  ExpressErrorMiddlewareInterface,
+  ExpressMiddlewareInterface,
+  Middleware,
+} from "routing-controllers"
 import HttpException from "../exceptions/http.exception"
-export const handleNotFound = (app: Express) => {
-  app.use((req, res, next) => {
-    const error: HttpException = new HttpException(404, "Not Found")
+
+@Middleware({ type: "after" })
+export class HandleNotFound implements ExpressMiddlewareInterface {
+  use(request: Request, response: any, next: (err: any) => any) {
+    const error: HttpException = new HttpException("Not Found", 404)
     next(error)
-  })
+  }
 }
 
-export const catchError = (app: Express) => {
-  app.use(
-    (err: HttpException, req: Request, res: Response, next: NextFunction) => {
-      res.status(err.status || 500)
-      res.json({
+@Middleware({ type: "after" })
+export class CustomErrorHandler implements ExpressErrorMiddlewareInterface {
+  error(
+    error: any,
+    request: Request,
+    response: Response,
+    next: (err: any) => any
+  ) {
+    if (!response.headersSent)
+      response.json({
         errors: {
-          message: err.message,
+          message: error.message,
         },
       })
-    }
-  )
+  }
 }

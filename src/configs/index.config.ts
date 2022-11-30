@@ -8,7 +8,7 @@ if (!configEnv) {
 export const config = {
   port: process.env.PORT ? Number(process.env.PORT) : 8080,
 
-  jwtSecret: process.env.JWT_SECRET,
+  jwtSecret: process.env.JWT_SECRET || "",
 
   database: {
     type: process.env.DATABASE_TYPE,

@@ -1,8 +1,10 @@
 import express, { Express } from "express"
-import cors from "cors"
+import { createExpressServer, useContainer } from "routing-controllers"
+import Container from "typedi"
+import UserController from "../controllers/user.controller"
 import {
-  catchError,
-  handleNotFound,
+  CustomErrorHandler,
+  HandleNotFound,
 } from "../middlewares/handleError.middleware"
 import { configSwagger } from "../middlewares/swagger.middleware"
 import { initDatabase } from "./database"
@@ -10,16 +12,17 @@ import { initDatabase } from "./database"
 export const setupServer = async () => {
   await initDatabase()
 
-  const app: Express = express()
-  app.use(cors())
+  useContainer(Container)
+  // const app: Express = express()
+  const app = createExpressServer({
+    defaultErrorHandler: false,
+    controllers: [UserController],
+    cors: true,
+    middlewares: [HandleNotFound, CustomErrorHandler],
+  })
 
   // config swagger
-  configSwagger(app)
-
-  // handle Error
-
-  handleNotFound(app)
-  catchError(app)
+  // configSwagger(app)
 
   return app
 }

@@ -1,3 +1,4 @@
+import "reflect-metadata"
 import { config } from "./configs/index.config"
 import { setupServer } from "./loader/app"
 
