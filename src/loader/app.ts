@@ -16,6 +16,7 @@ import { initDatabase } from "./database"
 import CategoryController from "../controllers/category.controller"
 import TagController from "../controllers/tag.controller"
 import BlogController from "../controllers/blog.controller"
+import { authMiddleware } from "../middlewares/auth.middleware"
 
 export const setupServer = async () => {
   await initDatabase()
@@ -26,6 +27,7 @@ export const setupServer = async () => {
   configSwagger(app)
 
   useExpressServer(app, {
+    authorizationChecker: authMiddleware,
     defaultErrorHandler: false,
     controllers: [
       UserController,

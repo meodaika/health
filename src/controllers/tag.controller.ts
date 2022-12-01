@@ -1,4 +1,5 @@
 import {
+  Authorized,
   Body,
   Get,
   JsonController,
@@ -11,6 +12,7 @@ import { Tag } from "../entities/tag.entity"
 import TagService from "../services/tag.service"
 
 @JsonController("/tags")
+@Authorized("ADMIN")
 class TagController {
   constructor(private tagService: TagService) {}
 

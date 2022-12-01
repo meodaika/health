@@ -1,4 +1,5 @@
 import {
+  Authorized,
   Body,
   Get,
   JsonController,
@@ -11,6 +12,7 @@ import { CategoryDto } from "../dtos/user/blog/category.dto"
 import CategoryService from "../services/category.service"
 
 @JsonController("/categories")
+@Authorized("ADMIN")
 class CategoryController {
   constructor(private categoryService: CategoryService) {}
 
