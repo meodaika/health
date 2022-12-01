@@ -1,15 +1,5 @@
-import { Type } from "class-transformer"
-import {
-  IsDateString,
-  IsEnum,
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-  IsRFC3339,
-  IsString,
-} from "class-validator"
+import { IsEnum, IsNumber, IsOptional } from "class-validator"
 import { RecordUnitFilter } from "../interfaces/record.interface"
-import { PaginationQueryDto } from "./pagination.dto"
 
 export class RecordDto {
   @IsNumber({ maxDecimalPlaces: 2 })

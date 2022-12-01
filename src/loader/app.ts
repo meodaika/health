@@ -23,6 +23,7 @@ import {
 import DiaryController from "../controllers/diary.controller"
 import ExcerciseController from "../controllers/excercise.controller"
 import RecordController from "../controllers/record.controller"
+import MealController from "../controllers/meal.controller"
 
 export const setupServer = async () => {
   await initDatabase()
@@ -44,25 +45,11 @@ export const setupServer = async () => {
       DiaryController,
       ExcerciseController,
       RecordController,
+      MealController,
     ],
-    // controllers: [path.join(__dirname + "../controllers/*.controller.ts")],
     cors: true,
     middlewares: [HandleNotFound, CustomErrorHandler],
   })
-
-  /* const app = createExpressServer({
-    defaultErrorHandler: false,
-    controllers: [
-      UserController,
-      CategoryController,
-      TagController,
-      BlogController,
-    ],
-    // controllers: [path.join(__dirname + "../controllers/*.controller.ts")],
-    cors: true,
-    middlewares: [HandleNotFound, CustomErrorHandler],
-  })
- */
 
   return app
 }

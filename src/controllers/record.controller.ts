@@ -32,7 +32,7 @@ class RecordController {
   @Get("/")
   async getTags(
     @CurrentUser() user: ICurrentUser,
-    @QueryParams() recordQuery: RecordQueryDto
+    @QueryParams() recordQuery: any
   ) {
     const records = await this.recordService.getRecords(
       user,
