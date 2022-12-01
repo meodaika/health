@@ -441,7 +441,227 @@
           }
         }
       },
-      "parameters": []
+      "parameters": [],
+      "get": {
+        "summary": "",
+        "operationId": "get-blogs",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "number"
+            },
+            "in": "query",
+            "name": "pageNum"
+          },
+          {
+            "schema": {
+              "type": "number"
+            },
+            "in": "query",
+            "name": "pageSize"
+          },
+          {
+            "schema": {
+              "type": "number"
+            },
+            "in": "query",
+            "name": "category"
+          },
+          {
+            "schema": {
+              "type": "number"
+            },
+            "in": "query",
+            "name": "tag"
+          }
+        ]
+      }
+    },
+    "/diaries": {
+      "get": {
+        "summary": "Your GET endpoint",
+        "tags": [],
+        "responses": {},
+        "operationId": "get-diaries",
+        "parameters": [
+          {
+            "schema": {
+              "type": "number"
+            },
+            "in": "query",
+            "name": "pageNum"
+          },
+          {
+            "schema": {
+              "type": "number"
+            },
+            "in": "query",
+            "name": "pageSize"
+          }
+        ]
+      },
+      "post": {
+        "summary": "",
+        "operationId": "post-diaries",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "content": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/exercises": {
+      "get": {
+        "summary": "Your GET endpoint",
+        "tags": [],
+        "responses": {},
+        "operationId": "get-exercises",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "number"
+            },
+            "in": "query",
+            "name": "pageNum"
+          },
+          {
+            "schema": {
+              "type": "number"
+            },
+            "in": "query",
+            "name": "pageSize"
+          }
+        ]
+      },
+      "post": {
+        "summary": "",
+        "operationId": "post-exercises",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "content": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "move": {
+                          "type": "string",
+                          "example": "Push up"
+                        },
+                        "calo": {
+                          "type": "number",
+                          "example": 25
+                        },
+                        "time": {
+                          "type": "number",
+                          "example": 10
+                        }
+                      },
+                      "required": ["move"]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Excercise"]
+      }
+    },
+    "/exercises/{id}/move": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "post": {
+        "summary": "",
+        "operationId": "post-excercises-id-add-move",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "x-examples": {
+                  "example-1": {
+                    "calo": 25,
+                    "move": "Run",
+                    "time": 10
+                  }
+                },
+                "properties": {
+                  "calo": {
+                    "type": "integer",
+                    "example": 200
+                  },
+                  "move": {
+                    "type": "string",
+                    "example": "Run"
+                  },
+                  "time": {
+                    "type": "integer",
+                    "example": 15
+                  }
+                },
+                "required": ["move"]
+              }
+            }
+          },
+          "description": ""
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
     }
   },
   "servers": [

@@ -22,6 +22,7 @@ import {
 } from "../middlewares/auth.middleware"
 import DiaryController from "../controllers/diary.controller"
 import ExcerciseController from "../controllers/excercise.controller"
+import RecordController from "../controllers/record.controller"
 
 export const setupServer = async () => {
   await initDatabase()
@@ -42,6 +43,7 @@ export const setupServer = async () => {
       BlogController,
       DiaryController,
       ExcerciseController,
+      RecordController,
     ],
     // controllers: [path.join(__dirname + "../controllers/*.controller.ts")],
     cors: true,
