@@ -5,6 +5,7 @@ import {
   Middleware,
 } from "routing-controllers"
 import HttpException from "../exceptions/http.exception"
+import { getRequestContext } from "../utils/asyncStorage"
 
 @Middleware({ type: "after" })
 export class HandleNotFound implements ExpressMiddlewareInterface {

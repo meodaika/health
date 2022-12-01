@@ -16,7 +16,11 @@ import { initDatabase } from "./database"
 import CategoryController from "../controllers/category.controller"
 import TagController from "../controllers/tag.controller"
 import BlogController from "../controllers/blog.controller"
-import { authMiddleware } from "../middlewares/auth.middleware"
+import {
+  authMiddleware,
+  currentUserChecker,
+} from "../middlewares/auth.middleware"
+import DiaryController from "../controllers/diary.controller"
 
 export const setupServer = async () => {
   await initDatabase()
@@ -28,12 +32,14 @@ export const setupServer = async () => {
 
   useExpressServer(app, {
     authorizationChecker: authMiddleware,
+    currentUserChecker,
     defaultErrorHandler: false,
     controllers: [
       UserController,
       CategoryController,
       TagController,
       BlogController,
+      DiaryController,
     ],
     // controllers: [path.join(__dirname + "../controllers/*.controller.ts")],
     cors: true,
