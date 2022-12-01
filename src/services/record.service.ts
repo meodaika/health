@@ -11,6 +11,7 @@ import {
   IRecord,
   RecordUnitFilter,
 } from "../interfaces/record.interface"
+import { delCacheByPattern, getCache, setCache } from "../utils/cache"
 
 @Service()
 export default class RecordService {
@@ -23,17 +24,20 @@ export default class RecordService {
     user: ICurrentUser,
     timeType: RecordUnitFilter = RecordUnitFilter.month
   ) {
+    // Check have result in cache and show it
+    const userId = user.id
+    const cacheKey = `record:${userId}:${timeType}`
+    const cacheResult = await getCache(cacheKey)
+    // if (cacheResult) return cacheResult
+
+    // query record
     const qb = await this.recordRepository
       .createQueryBuilder("record")
       .leftJoinAndSelect("record.user", "user")
-      .where("user.id = :userId", { userId: user.id })
+      .where("user.id = :userId", { userId })
 
     let totalSubUnitTime = 1
     let timeTypeUnit = timeType
-    if (timeType === RecordUnitFilter.week) {
-      totalSubUnitTime = 7
-      timeTypeUnit = RecordUnitFilter.day
-    }
 
     const { startTime, endTime } = this.generateRangeTime(1, timeTypeUnit)
 
@@ -71,6 +75,8 @@ export default class RecordService {
       }
     })
 
+    await setCache(cacheKey, recordsFilted)
+
     return recordsFilted
   }
 
@@ -82,11 +88,15 @@ export default class RecordService {
 
     const currentDate = recordData.time || dayjs().format("YYYYMMDDHHmm")
 
-    return await this.recordRepository.save({
+    const newRecord = await this.recordRepository.save({
       ...recordData,
       time: currentDate,
       user: user as any,
     })
+
+    const cacheKey = `record:${user.id}`
+    await delCacheByPattern(cacheKey)
+    return newRecord
   }
 
   // return array like [ 1, 2, 3, ... 29, 30 ] for month or [ 1, 2, .... , 23] for day, and sort by current time
@@ -101,10 +111,11 @@ export default class RecordService {
         break
       case RecordUnitFilter.month:
         unitTimes = Array.from(Array(31).keys()).map((val) => val + 1)
+        break
     }
 
     // split
-    const currentTime = dayjs("YYYYMMDDHHmm").toDate()
+    const currentTime = dayjs().toDate()
     const currentUnit = this.getRecordUnitTime(unit, currentTime)
     var indexToSplit = unitTimes.indexOf(currentUnit)
     var first = unitTimes.slice(0, indexToSplit + 1)
@@ -162,6 +173,10 @@ export default class RecordService {
   }
 
   generateRangeTime(timeRange: number, unit: dayjs.ManipulateType): IDateRange {
+    if (unit === RecordUnitFilter.week) {
+      timeRange = 7
+      unit = "day"
+    }
     const startTime = dayjs().subtract(timeRange, unit).format("YYYYMMDDHHmm")
     const endTime = dayjs().format("YYYYMMDDHHmm")
     return {
