@@ -14,4 +14,6 @@ export const config = {
     type: process.env.DATABASE_TYPE,
     url: process.env.DATABASE_URL,
   },
+
+  blogSummaryLength: 200,
 }

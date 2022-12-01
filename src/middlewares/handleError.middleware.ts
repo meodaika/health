@@ -22,6 +22,7 @@ export class CustomErrorHandler implements ExpressErrorMiddlewareInterface {
     response: Response,
     next: (err: any) => any
   ) {
+    console.log("errr:::", error)
     if (!response.headersSent)
       response.json({
         errors: {

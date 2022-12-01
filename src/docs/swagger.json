@@ -1,47 +1,452 @@
 {
-	"components": {
-		"examples": {},
-		"headers": {},
-		"parameters": {},
-		"requestBodies": {},
-		"responses": {},
-		"schemas": {},
-		"securitySchemes": {}
-	},
-	"info": {
-		"title": "health-manager",
-		"version": "1.0.0",
-		"license": {
-			"name": "MIT"
-		},
-		"contact": {}
-	},
-	"openapi": "3.0.0",
-	"paths": {
-		"/users": {
-			"get": {
-				"operationId": "GetUsers",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "number",
-									"format": "double"
-								}
-							}
-						}
-					}
-				},
-				"security": [],
-				"parameters": []
-			}
-		}
-	},
-	"servers": [
-		{
-			"url": "/"
-		}
-	]
+  "components": {
+    "examples": {},
+    "headers": {},
+    "parameters": {},
+    "requestBodies": {},
+    "responses": {},
+    "schemas": {
+      "createUserDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          }
+        },
+        "required": ["email", "password", "username"],
+        "x-internal": false
+      },
+      "Role": {
+        "enum": ["USER", "ADMIN"],
+        "type": "string"
+      },
+      "User": {
+        "properties": {
+          "id": {
+            "type": "number",
+            "format": "double"
+          },
+          "username": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "salt": {
+            "type": "string"
+          },
+          "role": {
+            "$ref": "#/components/schemas/Role"
+          }
+        },
+        "required": ["id", "username", "email", "password", "salt", "role"],
+        "type": "object",
+        "additionalProperties": false
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "description": "JWT Authorization header using the Bearer scheme.",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "info": {
+    "title": "health-manager",
+    "version": "1.0.0",
+    "license": {
+      "name": "MIT"
+    },
+    "contact": {}
+  },
+  "openapi": "3.0.0",
+  "paths": {
+    "/users/sign-in": {
+      "post": {
+        "operationId": "Login",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "type": "number",
+                  "format": "double"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "security": [],
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "description": "",
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "password": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": ["email", "password"],
+                "x-examples": {
+                  "example-1": {
+                    "email": "kongkong@gmail.com",
+                    "password": "minter"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Auth"]
+      },
+      "parameters": []
+    },
+    "/users/sign-up": {
+      "post": {
+        "summary": "",
+        "operationId": "post-users-signup",
+        "tags": ["Auth"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "description": "",
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "password": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "username": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": ["email", "password", "username"],
+                "x-examples": {
+                  "example-1": {
+                    "email": "string",
+                    "password": "string",
+                    "username": "string"
+                  }
+                }
+              }
+            }
+          },
+          "description": ""
+        }
+      },
+      "parameters": []
+    },
+    "/users": {
+      "get": {
+        "operationId": "GetUsers",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  },
+                  "type": "array"
+                }
+              }
+            }
+          }
+        },
+        "security": [],
+        "parameters": []
+      }
+    },
+    "/categories": {
+      "get": {
+        "summary": "Your GET endpoint",
+        "tags": ["Category"],
+        "responses": {},
+        "operationId": "get-categories",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "",
+        "operationId": "post-categories",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "description": "",
+                "type": "object",
+                "x-examples": {
+                  "example-1": {
+                    "name": "jfklsdj",
+                    "order": 1
+                  }
+                },
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "example": "Category 1"
+                  },
+                  "order": {
+                    "type": "number"
+                  }
+                },
+                "required": ["name"]
+              }
+            }
+          }
+        }
+      },
+      "parameters": []
+    },
+    "/categories/{id}": {
+      "get": {
+        "summary": "Your GET endpoint",
+        "tags": ["Category"],
+        "responses": {},
+        "operationId": "get-categories-:id"
+      },
+      "parameters": [
+        {
+          "schema": {
+            "type": "number"
+          },
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "patch": {
+        "summary": "",
+        "operationId": "patch-categories-id",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "description": "",
+                "type": "object",
+                "x-examples": {
+                  "example-1": {
+                    "name": "fs",
+                    "order": 1
+                  }
+                },
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "example": "Category 1-1"
+                  },
+                  "order": {
+                    "type": "number"
+                  }
+                },
+                "required": ["name"]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tags": {
+      "get": {
+        "summary": "Your GET endpoint",
+        "responses": {},
+        "operationId": "get-tags",
+        "tags": ["Tag"]
+      },
+      "post": {
+        "summary": "",
+        "operationId": "post-tagss",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "description": "",
+                "type": "object",
+                "x-examples": {
+                  "example-1": {
+                    "name": "jfklsdj",
+                    "order": 1
+                  }
+                },
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "example": "Tag 1"
+                  }
+                },
+                "required": ["name"]
+              }
+            }
+          }
+        }
+      },
+      "parameters": []
+    },
+    "/tags/{id}": {
+      "get": {
+        "summary": "Your GET endpoint",
+        "responses": {},
+        "operationId": "get-categories-:id",
+        "tags": ["Tag"]
+      },
+      "parameters": [
+        {
+          "schema": {
+            "type": "number"
+          },
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "patch": {
+        "summary": "",
+        "operationId": "patch-categories-id",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "description": "",
+                "type": "object",
+                "x-examples": {
+                  "example-1": {
+                    "name": "fs",
+                    "order": 1
+                  }
+                },
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "example": "Tag 1-1"
+                  }
+                },
+                "required": ["name"]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/blogs": {
+      "post": {
+        "summary": "",
+        "operationId": "post-blogs",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "description": "",
+                "type": "object",
+                "x-examples": {
+                  "example-1": {
+                    "name": "jfklsdj",
+                    "order": 1
+                  }
+                },
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "minLength": 1,
+                    "example": "Post AA"
+                  },
+                  "summary": {
+                    "type": "string"
+                  },
+                  "content": {
+                    "type": "string",
+                    "example": "Content of Article"
+                  },
+                  "category": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "tag": {
+                    "type": "string"
+                  },
+                  "photo": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                },
+                "required": ["title", "category"]
+              }
+            }
+          }
+        }
+      },
+      "parameters": []
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080"
+    }
+  ]
 }
