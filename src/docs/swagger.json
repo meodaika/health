@@ -221,7 +221,13 @@
               }
             }
           }
-        }
+        },
+        "tags": ["Category"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       },
       "parameters": []
     },
@@ -230,7 +236,12 @@
         "summary": "Your GET endpoint",
         "tags": ["Category"],
         "responses": {},
-        "operationId": "get-categories-:id"
+        "operationId": "get-categories-:id",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       },
       "parameters": [
         {
@@ -276,7 +287,13 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": ["Category"]
       }
     },
     "/tags": {
@@ -284,7 +301,12 @@
         "summary": "Your GET endpoint",
         "responses": {},
         "operationId": "get-tags",
-        "tags": ["Tag"]
+        "tags": ["Tag"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       },
       "post": {
         "summary": "",
@@ -317,7 +339,13 @@
               }
             }
           }
-        }
+        },
+        "tags": ["Tag"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       },
       "parameters": []
     },
@@ -326,7 +354,12 @@
         "summary": "Your GET endpoint",
         "responses": {},
         "operationId": "get-categories-:id",
-        "tags": ["Tag"]
+        "tags": ["Tag"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       },
       "parameters": [
         {
@@ -369,7 +402,13 @@
               }
             }
           }
-        }
+        },
+        "tags": ["Tag"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/blogs": {
@@ -422,7 +461,13 @@
               }
             }
           }
-        }
+        },
+        "tags": ["Blog"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       },
       "parameters": [],
       "get": {
@@ -503,9 +548,6 @@
           }
         },
         "security": [
-          {
-            "bearerAuth": []
-          },
           {
             "bearerAuth": []
           }
