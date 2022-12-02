@@ -1,6 +1,6 @@
 # Health Application
 
-A brief description of what this project does and who it's for
+A application manage health. You can read articles about health care methods, nutrition. Users can create personal information including Diary, Excercise and Body Index. A statistic chart will show the change in body through each period. A feature Reminder notification will remind you about time if you forgot do excercise or have meal. User can set schedule to be reminded, it is depend on personal timetable.
 
 ## Features
 
@@ -24,7 +24,7 @@ A brief description of what this project does and who it's for
 - ~~Blog~~
 - ~~Diary~~
 - ~~Excercise~~
-- ~~Records filter by day, week, month or year~~
+- ~~Records ( Body index) filter by day, week, month or year~~
 - ~~Meal~~
 - Reminder notification
 

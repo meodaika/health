@@ -10,8 +10,10 @@ import { getRequestContext } from "../utils/asyncStorage"
 @Middleware({ type: "after" })
 export class HandleNotFound implements ExpressMiddlewareInterface {
   use(request: Request, response: any, next: (err: any) => any) {
-    const error: HttpException = new HttpException("Not Found", 404)
-    next(error)
+    if (!response.headersSent) {
+      const error: HttpException = new HttpException("Not Found", 404)
+      next(error)
+    }
   }
 }
 

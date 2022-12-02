@@ -104,23 +104,25 @@
               "schema": {
                 "description": "",
                 "type": "object",
-                "properties": {
-                  "email": {
-                    "type": "string",
-                    "minLength": 1
-                  },
-                  "password": {
-                    "type": "string",
-                    "minLength": 1
-                  }
-                },
-                "required": ["email", "password"],
                 "x-examples": {
                   "example-1": {
                     "email": "kongkong@gmail.com",
                     "password": "minter"
                   }
-                }
+                },
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "minLength": 1,
+                    "example": "abc@gmail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "minLength": 1,
+                    "example": "123456"
+                  }
+                },
+                "required": ["email", "password"]
               }
             }
           }
@@ -140,28 +142,31 @@
               "schema": {
                 "description": "",
                 "type": "object",
-                "properties": {
-                  "email": {
-                    "type": "string",
-                    "minLength": 1
-                  },
-                  "password": {
-                    "type": "string",
-                    "minLength": 1
-                  },
-                  "username": {
-                    "type": "string",
-                    "minLength": 1
-                  }
-                },
-                "required": ["email", "password", "username"],
                 "x-examples": {
                   "example-1": {
                     "email": "string",
                     "password": "string",
                     "username": "string"
                   }
-                }
+                },
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "minLength": 1,
+                    "example": "abc@gmail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "minLength": 1,
+                    "example": "123456"
+                  },
+                  "username": {
+                    "type": "string",
+                    "minLength": 1,
+                    "example": "Mr Code"
+                  }
+                },
+                "required": ["email", "password", "username"]
               }
             }
           },
@@ -169,28 +174,6 @@
         }
       },
       "parameters": []
-    },
-    "/users": {
-      "get": {
-        "operationId": "GetUsers",
-        "responses": {
-          "200": {
-            "description": "Ok",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "items": {
-                    "$ref": "#/components/schemas/User"
-                  },
-                  "type": "array"
-                }
-              }
-            }
-          }
-        },
-        "security": [],
-        "parameters": []
-      }
     },
     "/categories": {
       "get": {
@@ -479,13 +462,14 @@
             "in": "query",
             "name": "tag"
           }
-        ]
+        ],
+        "tags": ["Blog"]
       }
     },
     "/diaries": {
       "get": {
         "summary": "Your GET endpoint",
-        "tags": [],
+        "tags": ["Diary"],
         "responses": {},
         "operationId": "get-diaries",
         "parameters": [
@@ -503,6 +487,11 @@
             "in": "query",
             "name": "pageSize"
           }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
         ]
       },
       "post": {
@@ -514,6 +503,9 @@
           }
         },
         "security": [
+          {
+            "bearerAuth": []
+          },
           {
             "bearerAuth": []
           }
@@ -531,13 +523,13 @@
               }
             }
           }
-        }
+        },
+        "tags": ["Diary"]
       }
     },
     "/exercises": {
       "get": {
         "summary": "Your GET endpoint",
-        "tags": [],
         "responses": {},
         "operationId": "get-exercises",
         "security": [
@@ -560,7 +552,8 @@
             "in": "query",
             "name": "pageSize"
           }
-        ]
+        ],
+        "tags": ["Excercise"]
       },
       "post": {
         "summary": "",
@@ -602,7 +595,12 @@
             }
           }
         },
-        "tags": ["Excercise"]
+        "tags": ["Excercise"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/exercises/{id}/move": {
@@ -660,13 +658,14 @@
           {
             "bearerAuth": []
           }
-        ]
+        ],
+        "tags": ["Excercise"]
       }
     },
     "/records": {
       "get": {
         "summary": "Your GET endpoint",
-        "tags": [],
+        "tags": ["Record"],
         "responses": {},
         "operationId": "get-records",
         "security": [
@@ -721,13 +720,14 @@
             }
           },
           "description": ""
-        }
+        },
+        "tags": ["Record"]
       }
     },
     "/meals": {
       "get": {
         "summary": "Your GET endpoint",
-        "tags": [],
+        "tags": ["Meal"],
         "responses": {},
         "operationId": "get-meals",
         "parameters": [
@@ -781,7 +781,8 @@
           {
             "bearerAuth": []
           }
-        ]
+        ],
+        "tags": ["Meal"]
       }
     }
   },
