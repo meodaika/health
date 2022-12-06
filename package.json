@@ -1,9 +1,13 @@
 {
   "name": "health-manager",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "src/main.js",
   "license": "MIT",
+  "engines": {
+    "node": "14.x"
+  },
   "scripts": {
+    "start": "tsc && node dist/server.js",
     "dev": "nodemon",
     "seed": "ts-node ./src/utils/seeder.ts"
   },
