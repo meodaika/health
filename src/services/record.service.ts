@@ -11,7 +11,17 @@ import {
   IRecord,
   RecordUnitFilter,
 } from "../interfaces/record.interface"
-import { delCacheByPattern, getCache, setCache } from "../utils/cache"
+// import { delCacheByPattern, getCache, setCache } from "../utils/cache"
+
+const dateMapWeek = {
+  1: "Mon",
+  2: "Tues",
+  3: "Wed",
+  4: "Thurs",
+  5: "Fri",
+  6: "Sat",
+  7: "Sun",
+}
 
 @Service()
 export default class RecordService {
@@ -27,7 +37,7 @@ export default class RecordService {
     // Check have result in cache and show it
     const userId = user.id
     const cacheKey = `record:${userId}:${timeType}`
-    const cacheResult = await getCache(cacheKey)
+    // const cacheResult = await getCache(cacheKey)
     // if (cacheResult) return cacheResult
 
     // query record
@@ -52,7 +62,7 @@ export default class RecordService {
 
     const recordMap = this.generateListRecord(records, timeTypeUnit)
 
-    const recordsFilted = listUnitTime.map((unit) => {
+    let recordsFilted = listUnitTime.map((unit) => {
       let unitTime = {}
       const recordUnit = recordMap.get(unit)
       if (recordUnit) {
@@ -74,8 +84,10 @@ export default class RecordService {
         unit,
       }
     })
+    // await setCache(cacheKey, recordsFilted)
 
-    await setCache(cacheKey, recordsFilted)
+    if (timeTypeUnit === RecordUnitFilter.week)
+      recordsFilted = this.generateReadableWeekName(recordsFilted)
 
     return recordsFilted
   }
@@ -95,7 +107,7 @@ export default class RecordService {
     })
 
     const cacheKey = `record:${user.id}`
-    await delCacheByPattern(cacheKey)
+    // await delCacheByPattern(cacheKey)
     return newRecord
   }
 
@@ -111,6 +123,9 @@ export default class RecordService {
         break
       case RecordUnitFilter.month:
         unitTimes = Array.from(Array(31).keys()).map((val) => val + 1)
+        break
+      case RecordUnitFilter.year:
+        unitTimes = Array.from(Array(12).keys()).map((val) => val + 1)
         break
     }
 
@@ -131,9 +146,9 @@ export default class RecordService {
       case RecordUnitFilter.week:
         return dayjs(recordTime).day()
       case RecordUnitFilter.month:
-        return dayjs(recordTime).month()
+        return dayjs(recordTime).date()
       case RecordUnitFilter.year:
-        return dayjs(recordTime).year()
+        return dayjs(recordTime).month() + 1
       default:
         return 0
     }
@@ -183,5 +198,16 @@ export default class RecordService {
       startTime,
       endTime,
     }
+  }
+
+  toWeek(date: number) {
+    return dateMapWeek[date]
+  }
+
+  generateReadableWeekName(recordsFilted: any[]) {
+    return recordsFilted.map((record) => ({
+      ...record,
+      unit: this.toWeek(record.unit),
+    }))
   }
 }

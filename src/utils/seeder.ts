@@ -22,10 +22,10 @@ const seedData = async () => {
   }
 
   // seed record
-  /*   const times = faker.date.betweens(
-    "2022-12-01T00:00:00.000Z",
+  const times = faker.date.betweens(
+    "2022-01-01T00:00:00.000Z",
     "2022-12-31T00:00:00.000Z",
-    30
+    200
   )
   const records = 0
   for (let i = 0; i < times.length; i++) {
@@ -35,16 +35,15 @@ const seedData = async () => {
       time: Number(dayjs(times[i]).format("YYYYMMDDHHmm")),
       user: user.id as any,
     })
-  } 
-  
+  }
+
   console.log(`Generated ${times.length} record`)
-  */
 
   for (let i = 3; i < 15; i++) {
     for (let j = 0; j < 24; j++) {
       const day = i.toString().padStart(2, "0")
       const hour = j.toString().padStart(2, "0")
-      console.log(day, hour)
+      // console.log(day, hour)
       await entity.insert(Record, {
         weight: faker.datatype.float({ min: 55, max: 60, precision: 0.01 }),
         fatPercent: faker.datatype.float({ min: 27, max: 30, precision: 0.01 }),
