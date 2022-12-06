@@ -2,10 +2,18 @@ import * as bcrypt from "bcrypt"
 import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from "typeorm"
 import { lowercase } from "../utils/model.util"
 
+const defaultScheduleNoti: { [k: string]: string } = {
+  "0900": "exercise",
+}
+
 export enum Role {
   User = "USER",
   Admin = "ADMIN",
 }
+
+type NotiPoint = "morning" | "lunch" | "dinner"
+
+type IUserNotify = Record<NotiPoint, string>
 
 @Entity()
 export class User {
@@ -30,6 +38,9 @@ export class User {
 
   @Column({ type: "enum", enum: Role, default: Role.User })
   public role: Role
+
+  @Column("jsonb", { nullable: true, default: defaultScheduleNoti })
+  public notify: IUserNotify
 
   @BeforeInsert()
   async hashPassword() {

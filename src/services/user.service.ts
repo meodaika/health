@@ -9,6 +9,7 @@ import HttpException from "../exceptions/http.exception"
 import { IJwtPayload } from "../interfaces/jwtPayload.interface"
 import { config } from "../configs/index.config"
 import { IAuthToken } from "../interfaces/token.interface"
+import { ICurrentUser } from "../interfaces/currentUser.interface"
 
 @Service()
 export default class UserService {
@@ -36,13 +37,12 @@ export default class UserService {
 
     const user = await this.userRepository.findOne({
       where: { email },
-      select: ["id", "password", "email", "role"],
+      select: ["id", "password", "email", "role", "username"],
     })
 
     if (!user) {
       throw new HttpException(`User with email ${email} not exists`)
     }
-    console.log(user, "user::")
     const checkPasswordMatch = await user.checkPasswordMatch(password)
     if (checkPasswordMatch === false) {
       throw new HttpException(`Password is not correct`)
@@ -56,7 +56,7 @@ export default class UserService {
 
     const token = this.generateToken(jwtPayload)
     if (!token) throw new HttpException(`Cannot create token`)
-    return { token }
+    return { token, username: user.username }
   }
 
   private generateToken(jwtPayload: IJwtPayload): string {
@@ -71,5 +71,22 @@ export default class UserService {
       },
       config.jwtSecret
     )
+  }
+
+  async getSchedulePoint(user: ICurrentUser) {
+    const userData = await this.userRepository.findOne(user.id, {
+      select: ["notify"],
+    })
+    return userData?.notify
+  }
+
+  async setSchedulePoint(user: ICurrentUser, setTime: any) {
+    const timeExercise =
+      setTime.hour.toString().padStart(2, "0") +
+      setTime.minute.toString().padStart(2, "0")
+    const updateResult = await this.userRepository.update(user.id, {
+      notify: { exercise: timeExercise },
+    })
+    return true
   }
 }

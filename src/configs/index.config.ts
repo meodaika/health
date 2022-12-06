@@ -16,4 +16,6 @@ export const config = {
   },
 
   blogSummaryLength: 200,
+
+  photoUrl: process.env.PHOTO_URL || "http://localhost:8080/uploads/",
 }

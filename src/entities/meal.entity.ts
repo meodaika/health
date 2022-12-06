@@ -1,5 +1,13 @@
-import { Exclude } from "class-transformer"
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm"
+import { Exclude, Expose } from "class-transformer"
+import {
+  AfterLoad,
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+} from "typeorm"
+import { config } from "../configs/index.config"
 import { BaseEntity } from "./base.entity"
 import { User } from "./user.entity"
 
@@ -27,4 +35,17 @@ export class Meal extends BaseEntity {
     name: "user_id",
   })
   user!: User
+
+  @AfterLoad()
+  photoFullUrl() {
+    this.thumbnail = config.photoUrl + "thumbnail/" + this.photo
+    this.photo = config.photoUrl + this.photo
+  }
+
+  thumbnail: string
+
+  /*  @Expose()
+  public get thumbnail() {
+    return `${config.photoUrl}thumbnail/${this.photo}`
+  } */
 }

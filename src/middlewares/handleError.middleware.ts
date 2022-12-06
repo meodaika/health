@@ -26,12 +26,13 @@ export class CustomErrorHandler implements ExpressErrorMiddlewareInterface {
     next: (err: any) => any
   ) {
     if (!response.headersSent) {
+      console.log(error)
       let errorMsg = error.message
-      if (error.errors) errorMsg = error.errors[0]["constraints"]
-      response.json({
-        errors: {
-          message: errorMsg,
-        },
+      if (error.errors)
+        errorMsg = Object.values(error.errors[0]["constraints"])[0]
+      response.status(error.status || 400).json({
+        success: false,
+        error: errorMsg,
       })
     }
   }

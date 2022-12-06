@@ -11,7 +11,12 @@ A application manage health.
 - Authentication
 - MVC Architecture
 - Cache data
-- Reminder notification for excercises, meals
+- Reminder notification for excercises, meals. User is setted default with 3 time to notify when must have meal : Morning ( breakfast ) : 7h00 , Lunch : 12h00, and Dinner : 19h00. At that time, app will open pop up to remind user. Aside , user can custom time for excercise whenever they want.
+
+## FIX
+
+- Can not upload ( missing thumbnail folder )
+- Show thumbnail photo url
 
 ## Tech Stack
 
@@ -30,7 +35,7 @@ A application manage health.
 - ~~Excercise~~
 - ~~Records ( Body index) filter by day, week, month or year~~
 - ~~Meal~~
-- Reminder notification
+- ~~Reminder notification~~
 
 ## Installation
 
@@ -40,6 +45,13 @@ Install my-project with npm
   cp example.env .env
   yarn
   yarn dev
+```
+
+and init test data :
+
+```bash
+  yarn seed
+
 ```
 
 ## Use

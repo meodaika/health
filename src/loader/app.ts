@@ -26,13 +26,44 @@ import ExcerciseController from "../controllers/excercise.controller"
 import RecordController from "../controllers/record.controller"
 import MealController from "../controllers/meal.controller"
 import { configSocket } from "../utils/socket"
+import { MessageController } from "../controllers/message.controller"
+import { createSocketServer } from "socket-controllers"
+import { SocketService } from "../services/socket.service"
+import schedule from "node-schedule"
+import { ScheduleService } from "../services/schedule.service"
 
 export const setupServer = async () => {
   await initDatabase()
 
+  /*   createSocketServer(8081, {
+    controllers: [MessageController],
+  }) */
+
   useContainer(Container)
 
   const app: Express = express()
+  app.use("/uploads", express.static("uploads"))
+
+  // configSocket(app)
+  const socket = Container.get(SocketService)
+
+  // init 3 times
+  // run every 5 minute
+  /* const rooms = {
+    "07:00": {
+      socketId: true,
+      socketId2: {
+        id: 234,
+        type: "gym",
+      },
+    },
+  }
+
+  const connection = {
+    id: "roomtime",
+  } */
+
+  const remindJob = Container.get(ScheduleService)
 
   configSwagger(app)
 
@@ -51,7 +82,10 @@ export const setupServer = async () => {
       RecordController,
       MealController,
     ],
-    cors: true,
+    validation: { stopAtFirstError: true },
+    cors: {
+      origin: "*", // (note: do not use this in production)
+    },
     middlewares: [HandleNotFound, CustomErrorHandler],
   })
 

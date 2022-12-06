@@ -4,14 +4,14 @@ import http from "http"
 
 export const configSocket = (app: Express) => {
   const server = http.createServer(app)
-  const io = new Server(server, {
+  const io = new Server(8081, {
     cors: {
       origin: "*",
     },
   })
 
   io.on("connection", (socket) => {
-    io.emit("user connectedsssss")
+    io.emit("user connected")
     socket.on("message", function (msg) {
       console.log(msg)
     })

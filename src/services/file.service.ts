@@ -10,7 +10,7 @@ export default class FileService {
     const { filename: image } = photo
     try {
       await sharp(photo.path)
-        .resize(400, 300)
+        .resize(400, 400)
         .jpeg({ quality: 50 })
         .toFile(path.resolve(photo.destination, "thumbnail", image))
     } catch (err) {

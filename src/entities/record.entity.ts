@@ -12,7 +12,7 @@ export class Record extends BaseEntity {
   fatPercent: number
 
   @Column({ type: "bigint", nullable: false })
-  time: Date
+  time: number
 
   @Exclude()
   @ManyToOne(() => User)

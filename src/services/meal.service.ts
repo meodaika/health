@@ -20,6 +20,7 @@ export default class MealService {
       .createQueryBuilder("meal")
       .leftJoinAndSelect("meal.user", "user")
       .where("user.id = :userId", { userId: user.id })
+      .orderBy("meal.id", "DESC")
 
     const { pageNum = 1, pageSize = 8, type } = queryMeal
 
