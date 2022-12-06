@@ -13,15 +13,15 @@ import {
 } from "../interfaces/record.interface"
 // import { delCacheByPattern, getCache, setCache } from "../utils/cache"
 
-const dateMapWeek = {
-  1: "Mon",
-  2: "Tues",
-  3: "Wed",
-  4: "Thurs",
-  5: "Fri",
-  6: "Sat",
-  7: "Sun",
-}
+const dateMapWeek = new Map([
+  [1, "Mon"],
+  [2, "Tues"],
+  [3, "Wed"],
+  [4, "Thurs"],
+  [5, "Fri"],
+  [6, "Sat"],
+  [7, "Sun"],
+])
 
 @Service()
 export default class RecordService {
@@ -102,7 +102,7 @@ export default class RecordService {
 
     const newRecord = await this.recordRepository.save({
       ...recordData,
-      time: currentDate,
+      time: Number(currentDate),
       user: user as any,
     })
 
@@ -130,7 +130,7 @@ export default class RecordService {
     }
 
     // split
-    const currentTime = dayjs().toDate()
+    const currentTime = dayjs().format("YYYYMMDDHHmm")
     const currentUnit = this.getRecordUnitTime(unit, currentTime)
     var indexToSplit = unitTimes.indexOf(currentUnit)
     var first = unitTimes.slice(0, indexToSplit + 1)
@@ -139,7 +139,7 @@ export default class RecordService {
     return [...second, ...first]
   }
 
-  getRecordUnitTime(unit: RecordUnitFilter, recordTime: Date) {
+  getRecordUnitTime(unit: RecordUnitFilter, recordTime: string) {
     switch (unit) {
       case RecordUnitFilter.day:
         return dayjs(recordTime).hour()
@@ -159,7 +159,7 @@ export default class RecordService {
     const recordMap = new Map<number, IRecord>()
 
     records.forEach((record) => {
-      const hour = this.getRecordUnitTime(unit, record.time)
+      const hour = this.getRecordUnitTime(unit, record.time.toString())
       // const hour = dayjs(record.time).hour()
 
       const { fatPercent, weight } = record
@@ -201,7 +201,7 @@ export default class RecordService {
   }
 
   toWeek(date: number) {
-    return dateMapWeek[date]
+    return dateMapWeek.get(date)
   }
 
   generateReadableWeekName(recordsFilted: any[]) {

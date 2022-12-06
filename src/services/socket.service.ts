@@ -29,7 +29,7 @@ const defaultScheduleNoti: { [k: string]: string } = {
 
 @Inject()
 export class SocketService {
-  private io
+  private io: any
   private roomTimes: IRoomTime = {}
   private socketConnection: ISocketConnect = {}
   constructor(
@@ -42,12 +42,12 @@ export class SocketService {
         origin: "*",
       },
     })
-    this.io.on("connection", (socket) => {
+    this.io.on("connection", (socket: any) => {
       // console.log("user connected")
       // handle user disconnect , remove from roomTime and list connection
     })
 
-    this.io.use(async (socket, next) => {
+    this.io.use(async (socket: any, next: any) => {
       var { token: authHeader } = socket.handshake.auth
       const currentUser = await this.getCurrentUser(authHeader)
       if (currentUser === false)
@@ -57,7 +57,9 @@ export class SocketService {
       // console.log(currentUser, "currentUser:::")
 
       // find schedule noti of user ( in database)
-      const currentUserInfo = await this.userRepository.findOne(currentUser.id)
+      const currentUserInfo = (await this.userRepository.findOne(
+        currentUser.id
+      )) as any
       console.log(`User: ${currentUserInfo?.username} connected`)
 
       const userScheduleData = Object.fromEntries(

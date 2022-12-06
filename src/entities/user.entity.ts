@@ -11,7 +11,7 @@ export enum Role {
   Admin = "ADMIN",
 }
 
-type NotiPoint = "morning" | "lunch" | "dinner"
+type NotiPoint = "morning" | "lunch" | "dinner" | "exercise"
 
 type IUserNotify = Record<NotiPoint, string>
 
